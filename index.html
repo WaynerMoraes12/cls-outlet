@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CLS Outlet – Os Melhores Preços da Região</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red:#e8001d; --red2:#b5001a; --dark:#0d0d0d; --darker:#070707;
+      --mid:#1a1a1a; --card:#141414; --border:#252525;
+      --text:#e4e4e4; --muted:#888; --white:#ffffff;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family:'Barlow',sans-serif; background:var(--darker); color:var(--text); overflow-x:hidden; }
+    ::-webkit-scrollbar{width:5px} ::-webkit-scrollbar-track{background:var(--dark)} ::-webkit-scrollbar-thumb{background:var(--red);border-radius:3px}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
+    @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    @keyframes wpp-ring{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.8);opacity:0}}
+
+    .reveal{opacity:0;transform:translateY(40px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+
+    /* NAVBAR */
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;background:rgba(5,5,5,.97);backdrop-filter:blur(16px);border-bottom:2px solid var(--red);display:flex;align-items:center;justify-content:space-between;padding:0 6%;box-shadow:0 4px 40px rgba(232,0,29,.12)}
+    .nav-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.9rem;letter-spacing:3px;color:var(--white);text-decoration:none}
+    .nav-logo span{color:var(--red)}
+    .nav-links{display:flex;align-items:center;gap:2rem;list-style:none}
+    .nav-links a{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#bbb;text-decoration:none;transition:color .2s;position:relative}
+    .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--red);transition:width .3s}
+    .nav-links a:hover{color:var(--white)} .nav-links a:hover::after{width:100%}
+    .nav-cta{background:var(--red)!important;color:var(--white)!important;padding:8px 18px!important;border-radius:4px}
+    .nav-cta::after{display:none!important} .nav-cta:hover{background:var(--red2)!important}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;z-index:1001}
+    .hamburger span{display:block;width:26px;height:2px;background:var(--white);border-radius:2px;transition:.3s}
+    .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+    .hamburger.open span:nth-child(2){opacity:0}
+    .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+    .mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;z-index:999;background:rgba(5,5,5,.99);padding:2rem 6%;flex-direction:column;gap:1.4rem;border-bottom:2px solid var(--red)}
+    .mobile-menu.open{display:flex;animation:fadeDown .3s ease}
+    .mobile-menu a{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text);text-decoration:none;padding-bottom:.8rem;border-bottom:1px solid var(--border)}
+    .mobile-menu a:hover{color:var(--red)}
+
+    /* HERO */
+    #hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding-top:64px;position:relative;overflow:hidden}
+    .hero-left{padding:5% 5% 5% 8%;position:relative;z-index:2}
+    .hero-right{position:relative;height:100%;min-height:calc(100vh - 64px)}
+    .hero-right img{width:100%;height:100%;object-fit:cover;filter:brightness(.7) saturate(1.1)}
+    .hero-right::before{content:'';position:absolute;left:0;top:0;bottom:0;width:50%;z-index:1;background:linear-gradient(to right,var(--darker),transparent)}
+    .hero-right::after{content:'';position:absolute;inset:0;z-index:1;background:linear-gradient(135deg,rgba(232,0,29,.08) 0%,transparent 60%)}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(232,0,29,.12);border:1px solid rgba(232,0,29,.35);padding:6px 16px;border-radius:50px;margin-bottom:1.8rem;font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);animation:fadeDown .6s ease both}
+    .hero-badge::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--red);animation:pulse 1.5s infinite}
+    .hero-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;line-height:.92;letter-spacing:-1px;text-transform:uppercase;font-size:clamp(3.5rem,7vw,7.5rem);animation:fadeUp .7s .1s ease both}
+    .hero-title .outline{-webkit-text-stroke:2px var(--white);color:transparent}
+    .hero-title .red{color:var(--red)}
+    .hero-sub{margin-top:1.6rem;max-width:520px;font-size:1.05rem;line-height:1.75;color:#aaa;font-weight:300;animation:fadeUp .7s .2s ease both}
+    .hero-buttons{display:flex;flex-wrap:wrap;gap:1rem;margin-top:2.5rem;animation:fadeUp .7s .3s ease both}
+    .btn-red{background:var(--red);color:var(--white);padding:14px 30px;border-radius:4px;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;transition:.25s;box-shadow:0 4px 24px rgba(232,0,29,.35);display:inline-flex;align-items:center;gap:8px}
+    .btn-red:hover{background:var(--red2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(232,0,29,.5)}
+    .btn-ghost{border:2px solid rgba(255,255,255,.25);color:var(--white);padding:12px 26px;border-radius:4px;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;transition:.25s;display:inline-flex;align-items:center;gap:8px}
+    .btn-ghost:hover{border-color:var(--white);background:rgba(255,255,255,.05)}
+    .hero-stats{display:flex;gap:2.5rem;margin-top:3rem;flex-wrap:wrap;animation:fadeUp .7s .4s ease both}
+    .stat-num{font-family:'Barlow Condensed',sans-serif;font-size:2.5rem;font-weight:900;color:var(--red);line-height:1}
+    .stat-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+
+    /* TICKER */
+    .ticker-bar{background:var(--red);padding:10px 0;overflow:hidden;white-space:nowrap}
+    .ticker-track{display:inline-flex;gap:3rem;animation:ticker 28s linear infinite}
+    .ticker-item{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:2px;text-transform:uppercase;color:var(--white)}
+    .ticker-item::before{content:'★  '}
+
+    /* SECTION */
+    section{padding:6rem 8%}
+    .section-tag{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--red);margin-bottom:.8rem}
+    .section-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(2.2rem,5vw,4rem);text-transform:uppercase;line-height:1;letter-spacing:-1px}
+    .section-title span{color:var(--red)}
+    .section-desc{max-width:600px;color:#999;line-height:1.8;margin-top:1rem}
+    .divider{width:60px;height:3px;background:var(--red);margin:1.2rem 0}
+
+    /* SOBRE */
+    #sobre{background:var(--dark)}
+    .sobre-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+    .sobre-img-wrap{position:relative}
+    .sobre-img-wrap img{width:100%;border-radius:4px;display:block;filter:brightness(.85) saturate(1.1);position:relative;z-index:1}
+    .sobre-img-wrap::before{content:'';position:absolute;top:-16px;left:-16px;right:16px;bottom:16px;border:2px solid var(--red);border-radius:4px;z-index:0}
+    .sobre-badge{position:absolute;bottom:-20px;right:-20px;z-index:2;background:var(--red);color:var(--white);padding:1.2rem 1.5rem;border-radius:4px;font-family:'Barlow Condensed',sans-serif;text-align:center;box-shadow:0 8px 24px rgba(232,0,29,.4)}
+    .sobre-badge strong{display:block;font-size:2.2rem;font-weight:900;line-height:1}
+    .sobre-badge span{font-size:.75rem;letter-spacing:1.5px;text-transform:uppercase;opacity:.9}
+    .sobre-text p{color:#aaa;line-height:1.85;margin-bottom:1rem;font-size:1rem}
+    .sobre-features{display:flex;flex-direction:column;gap:.7rem;margin-top:1.5rem}
+    .feat-item{display:flex;align-items:flex-start;gap:12px;font-size:.95rem;color:#ccc}
+    .feat-icon{width:32px;height:32px;border-radius:4px;background:rgba(232,0,29,.15);border:1px solid rgba(232,0,29,.3);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+
+    /* CATEGORIAS */
+    #categorias{background:var(--darker)}
+    .cat-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3rem;flex-wrap:wrap;gap:1rem}
+    .cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
+    .cat-card{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:2rem 1.5rem;text-align:center;transition:transform .3s,border-color .3s,box-shadow .3s;position:relative;overflow:hidden}
+    .cat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--red);transform:scaleX(0);transition:transform .3s;transform-origin:left}
+    .cat-card:hover{transform:translateY(-6px);border-color:rgba(232,0,29,.3);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+    .cat-card:hover::before{transform:scaleX(1)}
+    .cat-icon{font-size:2.5rem;margin-bottom:1rem;display:block}
+    .cat-name{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:.5rem}
+    .cat-desc{font-size:.85rem;color:var(--muted);line-height:1.6}
+
+    /* GALERIA */
+    #galeria{background:var(--dark)}
+    .galeria-grid{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:260px 260px;gap:12px;margin-top:2.5rem}
+    .gal-item{overflow:hidden;border-radius:6px;position:relative}
+    .gal-item:first-child{grid-row:1/3}
+    .gal-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s,filter .5s;filter:brightness(.8) saturate(1.1)}
+    .gal-item:hover img{transform:scale(1.06);filter:brightness(1) saturate(1.2)}
+    .gal-item::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.5) 0%,transparent 50%);pointer-events:none}
+
+    /* ECOMMERCE */
+    #ecommerce{background:linear-gradient(135deg,#0a0a0a 0%,#140004 50%,#0a0a0a 100%);position:relative;overflow:hidden}
+    #ecommerce::before{content:'';position:absolute;top:-50%;right:-10%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(232,0,29,.08) 0%,transparent 70%);pointer-events:none}
+    .ecom-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+    .ecom-cards{display:flex;flex-direction:column;gap:1.2rem}
+    .ecom-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;padding:1.4rem 1.6rem;display:flex;align-items:center;gap:1rem;text-decoration:none;color:var(--text);transition:border-color .3s,background .3s,transform .25s}
+    .ecom-card:hover{border-color:var(--red);background:rgba(232,0,29,.07);transform:translateX(6px)}
+    .ecom-card-icon{width:48px;height:48px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.5rem}
+    .ecom-card-icon.ml{background:rgba(255,225,0,.12)} .ecom-card-icon.olx{background:rgba(0,140,230,.12)} .ecom-card-icon.wpp{background:rgba(37,211,102,.12)} .ecom-card-icon.ig{background:rgba(253,29,29,.12)}
+    .ecom-card-info strong{display:block;font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--white);margin-bottom:3px}
+    .ecom-card-info span{font-size:.85rem;color:var(--muted)}
+    .ecom-arrow{margin-left:auto;color:var(--red);font-size:1.2rem;opacity:.6;transition:opacity .3s}
+    .ecom-card:hover .ecom-arrow{opacity:1}
+    .ecom-text .section-desc{max-width:100%}
+    .ecom-highlight{margin-top:2rem;padding:1.5rem;background:rgba(232,0,29,.08);border-left:3px solid var(--red);border-radius:0 6px 6px 0}
+    .ecom-highlight p{color:#ccc;line-height:1.8;font-size:.95rem}
+
+    /* UNIDADES */
+    #unidades{background:var(--darker)}
+    .unidades-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2.5rem}
+    .unidade-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:box-shadow .3s,transform .3s}
+    .unidade-card:hover{box-shadow:0 16px 50px rgba(0,0,0,.5);transform:translateY(-4px)}
+    .unidade-card-header{background:var(--red);padding:1.2rem 1.8rem;display:flex;align-items:center;justify-content:space-between}
+    .unidade-card-header h3{font-family:'Barlow Condensed',sans-serif;font-size:1.35rem;font-weight:900;letter-spacing:1.5px;text-transform:uppercase}
+    .unidade-card-header a{color:rgba(255,255,255,.8);font-size:1.4rem;text-decoration:none;transition:color .2s}
+    .unidade-card-header a:hover{color:var(--white)}
+    .unidade-card-body{padding:1.8rem}
+    .info-row{display:flex;align-items:flex-start;gap:12px;margin-bottom:1.2rem;font-size:.95rem;color:#bbb;line-height:1.6}
+    .info-row-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+    .horario-box{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;padding:1rem 1.2rem;margin-top:1.5rem}
+    .horario-box h4{font-family:'Barlow Condensed',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem}
+    .horario-row{display:flex;justify-content:space-between;font-size:.9rem;color:#ccc;padding:.25rem 0}
+    .horario-row span:last-child{color:var(--red);font-weight:600}
+    .horario-obs{font-size:.78rem;color:var(--muted);margin-top:.8rem;font-style:italic;line-height:1.5}
+    .unidade-instagram{display:flex;align-items:center;gap:8px;color:var(--white);text-decoration:none;font-size:.85rem;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-top:1.2rem;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);padding:10px 16px;border-radius:6px;transition:opacity .2s}
+    .unidade-instagram:hover{opacity:.85}
+
+    /* CTA STRIP */
+    .cta-strip{background:var(--red);padding:4rem 8%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2rem}
+    .cta-strip h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:900;text-transform:uppercase;letter-spacing:-1px;line-height:1.1}
+    .cta-strip h2 span{color:rgba(255,255,255,.6)}
+    .btn-white{background:var(--white);color:var(--red);padding:14px 30px;border-radius:4px;text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;transition:.25s;white-space:nowrap}
+    .btn-white:hover{background:rgba(255,255,255,.9);transform:translateY(-2px)}
+
+    /* FOOTER */
+    footer{background:#030303;border-top:1px solid var(--border);padding:4rem 8% 2rem}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+    .footer-brand p{color:var(--muted);font-size:.9rem;line-height:1.7;margin-top:1rem;max-width:280px}
+    .footer-col h4{font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--white);margin-bottom:1.2rem}
+    .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.7rem}
+    .footer-col a{color:var(--muted);text-decoration:none;font-size:.9rem;transition:color .2s}
+    .footer-col a:hover{color:var(--red)}
+    .footer-socials{display:flex;gap:.8rem;margin-top:1.2rem}
+    .social-btn{width:38px;height:38px;border-radius:6px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);text-decoration:none;font-size:1rem;transition:border-color .2s,color .2s,background .2s}
+    .social-btn:hover{border-color:var(--red);color:var(--red);background:rgba(232,0,29,.08)}
+    .footer-bottom{border-top:1px solid var(--border);padding-top:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-size:.8rem;color:var(--muted)}
+    .footer-bottom strong{color:var(--red)}
+
+    /* WPP FLOAT */
+    .wpp-float{position:fixed;bottom:28px;right:28px;z-index:999;width:58px;height:58px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.7rem;box-shadow:0 6px 24px rgba(37,211,102,.4);transition:transform .25s,box-shadow .25s;animation:fadeUp .5s .8s ease both}
+    .wpp-float:hover{transform:scale(1.1);box-shadow:0 10px 32px rgba(37,211,102,.55)}
+    .wpp-float::before{content:'';position:absolute;inset:0;border-radius:50%;background:#25d366;animation:wpp-ring 2.5s ease infinite;z-index:-1}
+
+    /* RESPONSIVE */
+    @media(max-width:1024px){
+      .cat-grid{grid-template-columns:repeat(2,1fr)}
+      .footer-grid{grid-template-columns:1fr 1fr}
+      .galeria-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+      .gal-item:first-child{grid-row:auto;grid-column:1/3;height:260px}
+    }
+    @media(max-width:768px){
+      .nav-links{display:none} .hamburger{display:flex}
+      section{padding:4rem 5%}
+      #hero{grid-template-columns:1fr;min-height:auto;padding-bottom:2rem}
+      .hero-right{display:none} .hero-left{padding:3rem 5%}
+      .hero-title{font-size:clamp(3rem,12vw,5rem)}
+      .sobre-grid{grid-template-columns:1fr;gap:3rem}
+      .sobre-badge{display:none} .sobre-img-wrap::before{display:none}
+      .cat-grid{grid-template-columns:repeat(2,1fr);gap:.8rem}
+      .ecom-grid{grid-template-columns:1fr;gap:2.5rem}
+      .unidades-grid{grid-template-columns:1fr}
+      .cta-strip{flex-direction:column;text-align:center}
+      .footer-grid{grid-template-columns:1fr;gap:2rem}
+      .footer-bottom{flex-direction:column;text-align:center}
+      .galeria-grid{grid-template-columns:1fr;grid-template-rows:auto}
+      .gal-item:first-child{grid-column:auto} .gal-item{height:220px}
+    }
+    @media(max-width:480px){
+      .hero-title{font-size:clamp(2.8rem,14vw,4rem)}
+      .hero-stats{gap:1.5rem}
+      .cat-grid{grid-template-columns:1fr}
+      nav{padding:0 4%}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="#hero" class="nav-logo">CLS <span>OUTLET</span></a>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#categorias">Categorias</a></li>
+    <li><a href="#galeria">Galeria</a></li>
+    <li><a href="#ecommerce">Loja Online</a></li>
+    <li><a href="#unidades">Unidades</a></li>
+    <li><a href="https://chat.whatsapp.com/IJtugbfKVQd3V9pT4wKK30?mode=gi_t" target="_blank" class="nav-cta">WhatsApp</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#sobre" onclick="closeMenu()">Sobre</a>
+  <a href="#categorias" onclick="closeMenu()">Categorias</a>
+  <a href="#galeria" onclick="closeMenu()">Galeria</a>
+  <a href="#ecommerce" onclick="closeMenu()">Loja Online</a>
+  <a href="#unidades" onclick="closeMenu()">Unidades</a>
+  <a href="https://chat.whatsapp.com/IJtugbfKVQd3V9pT4wKK30?mode=gi_t" target="_blank" onclick="closeMenu()">💬 WhatsApp</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-badge">Desde 2022 &bull; Os Melhores Preços</div>
+    <h1 class="hero-title">
+      CLS<br>
+      <span class="outline">OUTLET</span><br>
+      <span class="red">ARARAS</span>
+    </h1>
+    <p class="hero-sub">
+      Do eletrônico ao doméstico, do vestuário ao automotivo — tudo com preço de outlet e qualidade garantida. Duas unidades no interior paulista para atender você onde estiver.
+    </p>
+    <div class="hero-buttons">
+      <a href="#categorias" class="btn-red">🛒 Ver Produtos</a>
+      <a href="#unidades" class="btn-ghost">📍 Nossas Lojas</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">3+</div>
+        <div class="stat-label">Anos no mercado</div>
+      </div>
+      <div>
+        <div class="stat-num">2</div>
+        <div class="stat-label">Unidades</div>
+      </div>
+      <div>
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Produtos em oferta</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="foto_placa.jpg" alt="CLS Outlet – Placa da loja Araras" />
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-track">
+    <span class="ticker-item">Eletrônicos</span>
+    <span class="ticker-item">Domésticos</span>
+    <span class="ticker-item">Som &amp; Música</span>
+    <span class="ticker-item">Informática</span>
+    <span class="ticker-item">Vestuário</span>
+    <span class="ticker-item">Peças Automotivas</span>
+    <span class="ticker-item">Os Melhores Preços da Região</span>
+    <span class="ticker-item">Araras &amp; Santa Bárbara d'Oeste</span>
+    <span class="ticker-item">Eletrônicos</span>
+    <span class="ticker-item">Domésticos</span>
+    <span class="ticker-item">Som &amp; Música</span>
+    <span class="ticker-item">Informática</span>
+    <span class="ticker-item">Vestuário</span>
+    <span class="ticker-item">Peças Automotivas</span>
+    <span class="ticker-item">Os Melhores Preços da Região</span>
+    <span class="ticker-item">Araras &amp; Santa Bárbara d'Oeste</span>
+  </div>
+</div>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="sobre-grid">
+    <div class="sobre-img-wrap reveal">
+      <img src="foto_entrada.jpg" alt="Entrada da CLS Outlet" />
+      <div class="sobre-badge">
+        <strong>2022</strong>
+        <span>Fundação</span>
+      </div>
+    </div>
+    <div class="sobre-text reveal">
+      <p class="section-tag">Quem somos</p>
+      <h2 class="section-title">Uma história de <span>valor</span> e qualidade</h2>
+      <div class="divider"></div>
+      <p>Fundada em 2022, a <strong>CLS Outlet</strong> nasceu com um propósito claro: levar produtos de qualidade a preços que realmente cabem no bolso do consumidor do interior paulista. Em pouco tempo, conquistamos a confiança de milhares de clientes e expandimos nossa operação para duas unidades físicas — em <strong>Araras</strong> e em <strong>Santa Bárbara d'Oeste</strong>.</p>
+      <p>Nossa loja é um verdadeiro universo de variedades. Aqui você encontra desde utensílios domésticos para o lar até equipamentos de som e música, eletrônicos de ponta, periféricos e acessórios para computador, além de roupas e calçados com ótimo custo-benefício. E se você precisar de peças para o seu veículo, nosso e-commerce automotivo está disponível 24 horas por dia!</p>
+      <p>Trabalhamos com estoque rotativo e ofertas relâmpago, então cada visita à CLS é uma nova experiência. Nossa equipe é treinada para atender com atenção e sempre indicar a melhor opção para cada necessidade e orçamento.</p>
+      <div class="sobre-features">
+        <div class="feat-item"><span class="feat-icon">✅</span>Produtos novos, revisados e originais de outlets industriais</div>
+        <div class="feat-item"><span class="feat-icon">🏷️</span>Preços muito abaixo do varejo tradicional</div>
+        <div class="feat-item"><span class="feat-icon">🔄</span>Estoque renovado constantemente com novas ofertas</div>
+        <div class="feat-item"><span class="feat-icon">🚀</span>Vendas online via Mercado Livre e OLX com entrega em todo o Brasil</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIAS -->
+<section id="categorias">
+  <div class="cat-header reveal">
+    <div>
+      <p class="section-tag">O que você encontra aqui</p>
+      <h2 class="section-title">Nossas <span>categorias</span></h2>
+    </div>
+    <a href="#ecommerce" class="btn-ghost">Ver loja online →</a>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-card reveal">
+      <span class="cat-icon">🏠</span>
+      <div class="cat-name">Domésticos</div>
+      <div class="cat-desc">Utilidades, eletrodomésticos, itens para cozinha, limpeza e organização do lar com preços imbatíveis.</div>
+    </div>
+    <div class="cat-card reveal">
+      <span class="cat-icon">🔊</span>
+      <div class="cat-name">Som &amp; Música</div>
+      <div class="cat-desc">Caixas de som, fones de ouvido, amplificadores, instrumentos musicais e acessórios variados.</div>
+    </div>
+    <div class="cat-card reveal">
+      <span class="cat-icon">📱</span>
+      <div class="cat-name">Eletrônicos</div>
+      <div class="cat-desc">Smartphones, tablets, smartwatches, carregadores, cabos e gadgets com preço de outlet.</div>
+    </div>
+    <div class="cat-card reveal">
+      <span class="cat-icon">💻</span>
+      <div class="cat-name">Informática</div>
+      <div class="cat-desc">Computadores, notebooks, teclados, mouses, hubs e periféricos para uso doméstico e profissional.</div>
+    </div>
+    <div class="cat-card reveal">
+      <span class="cat-icon">👕</span>
+      <div class="cat-name">Vestuário</div>
+      <div class="cat-desc">Roupas, calçados e acessórios de moda para toda a família com estilo e qualidade garantida.</div>
+    </div>
+    <div class="cat-card reveal">
+      <span class="cat-icon">🔧</span>
+      <div class="cat-name">Ferramentas</div>
+      <div class="cat-desc">Ferramentas manuais, elétricas e equipamentos para manutenções domésticas e trabalhos profissionais.</div>
+    </div>
+    <div class="cat-card reveal">
+      <span class="cat-icon">🚗</span>
+      <div class="cat-name">Peças Automotivas</div>
+      <div class="cat-desc">E-commerce especializado em peças, acessórios e equipamentos para carros e motos — disponível 24h online!</div>
+    </div>
+    <div class="cat-card reveal">
+      <span class="cat-icon">🎮</span>
+      <div class="cat-name">Entretenimento</div>
+      <div class="cat-desc">Games, brinquedos, artigos esportivos e itens de lazer para toda a família se divertir.</div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIA -->
+<section id="galeria">
+  <div class="reveal">
+    <p class="section-tag">Conheça nossa loja</p>
+    <h2 class="section-title">Galeria <span>CLS</span></h2>
+    <p class="section-desc">Nosso espaço amplo, arejado e bem iluminado abriga milhares de produtos organizados por categoria. Cada visita é uma nova surpresa — venha conferir!</p>
+  </div>
+  <div class="galeria-grid reveal">
+    <div class="gal-item">
+      <img src="foto_fachada_2.jpg" alt="Interior CLS Outlet – motos elétricas em oferta" />
+    </div>
+    <div class="gal-item">
+      <img src="foto_fachada.jpg" alt="Interior CLS Outlet – corredor de produtos" />
+    </div>
+    <div class="gal-item">
+      <img src="foto_fachada_3.jpg" alt="Interior CLS Outlet – área de motocicletas e produtos" />
+    </div>
+    <div class="gal-item">
+      <img src="foto_entrada.jpg" alt="Entrada da CLS Outlet Araras" />
+    </div>
+  </div>
+</section>
+
+<!-- ECOMMERCE -->
+<section id="ecommerce">
+  <div class="ecom-grid">
+    <div class="ecom-text reveal">
+      <p class="section-tag">Compre online</p>
+      <h2 class="section-title">Sua loja favorita <span>na internet</span></h2>
+      <div class="divider"></div>
+      <p class="section-desc">Não conseguiu visitar a loja presencialmente? Sem problema! A CLS Outlet está presente nas maiores plataformas de e-commerce do Brasil, com dezenas de produtos disponíveis para compra online com entrega em todo o país. Segurança, praticidade e os mesmos preços imbatíveis da loja física.</p>
+      <div class="ecom-highlight">
+        <p>🚗 <strong>E-commerce Automotivo:</strong> Nossa loja virtual no Mercado Livre é especializada em peças, acessórios e equipamentos para veículos. Encontre o que precisa para seu carro ou moto com total segurança, garantia de satisfação e entrega rápida para todo o Brasil.</p>
+      </div>
+    </div>
+    <div class="ecom-cards reveal">
+      <a href="https://www.mercadolivre.com.br/pagina/outletcls#client=SEARCH&component_id=header_logo&tracking_id=c5c49c00-d28e-45c1-9f03-062a6e054195" target="_blank" class="ecom-card">
+        <div class="ecom-card-icon ml">🛒</div>
+        <div class="ecom-card-info">
+          <strong>Mercado Livre</strong>
+          <span>Loja oficial CLS Outlet — peças automotivas e mais</span>
+        </div>
+        <span class="ecom-arrow">→</span>
+      </a>
+      <a href="https://www.olx.com.br/perfil/cls-outlet-c4f7f928" target="_blank" class="ecom-card">
+        <div class="ecom-card-icon olx">📦</div>
+        <div class="ecom-card-info">
+          <strong>OLX</strong>
+          <span>Perfil oficial CLS Outlet — diversas categorias</span>
+        </div>
+        <span class="ecom-arrow">→</span>
+      </a>
+      <a href="https://chat.whatsapp.com/IJtugbfKVQd3V9pT4wKK30?mode=gi_t" target="_blank" class="ecom-card">
+        <div class="ecom-card-icon wpp">💬</div>
+        <div class="ecom-card-info">
+          <strong>Grupo WhatsApp</strong>
+          <span>Receba ofertas exclusivas em primeira mão</span>
+        </div>
+        <span class="ecom-arrow">→</span>
+      </a>
+      <a href="https://www.instagram.com/clsoutletararas/" target="_blank" class="ecom-card">
+        <div class="ecom-card-icon ig">📸</div>
+        <div class="ecom-card-info">
+          <strong>Instagram Araras</strong>
+          <span>@clsoutletararas — novidades e promoções</span>
+        </div>
+        <span class="ecom-arrow">→</span>
+      </a>
+      <a href="https://www.instagram.com/clsoutlet_sbo/" target="_blank" class="ecom-card">
+        <div class="ecom-card-icon ig">📸</div>
+        <div class="ecom-card-info">
+          <strong>Instagram Sta. Bárbara</strong>
+          <span>@clsoutlet_sbo — novidades da unidade SBO</span>
+        </div>
+        <span class="ecom-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- UNIDADES -->
+<section id="unidades">
+  <div class="reveal" style="text-align:center">
+    <p class="section-tag">Onde estamos</p>
+    <h2 class="section-title">Nossas <span>unidades</span></h2>
+    <p class="section-desc" style="margin:1rem auto 0;text-align:center">
+      Duas lojas físicas com amplo espaço, fácil acesso e estacionamento disponível. Venha nos visitar e descubra por que a CLS Outlet é a preferida do interior paulista!
+    </p>
+  </div>
+  <div class="unidades-grid">
+
+    <div class="unidade-card reveal">
+      <div class="unidade-card-header">
+        <h3>📍 Araras – SP</h3>
+        <a href="https://www.instagram.com/clsoutletararas/" target="_blank" title="Instagram Araras">📷</a>
+      </div>
+      <div class="unidade-card-body">
+        <div class="info-row">
+          <span class="info-row-icon">🗺️</span>
+          <span>Avenida Otto Barreto, 1067 — Distrito Industrial II (Guilherme Buck Junior), Araras – SP</span>
+        </div>
+        <div class="info-row">
+          <span class="info-row-icon">📱</span>
+          <span>Instagram: <a href="https://www.instagram.com/clsoutletararas/" target="_blank" style="color:var(--red)">@clsoutletararas</a></span>
+        </div>
+        <div class="horario-box">
+          <h4>⏰ Horário de Funcionamento</h4>
+          <div class="horario-row"><span>Segunda-feira</span><span>09h – 17h</span></div>
+          <div class="horario-row"><span>Terça a Sexta</span><span>09h – 18h</span></div>
+          <div class="horario-row"><span>Sábado</span><span>09h – 14h</span></div>
+          <div class="horario-obs">⚠️ Atenção: os portões fecham 30 minutos antes do encerramento do expediente. Planeje sua visita com antecedência!</div>
+        </div>
+        <a href="https://www.instagram.com/clsoutletararas/" target="_blank" class="unidade-instagram">📸 Seguir no Instagram</a>
+      </div>
+    </div>
+
+    <div class="unidade-card reveal">
+      <div class="unidade-card-header">
+        <h3>📍 Santa Bárbara d'Oeste – SP</h3>
+        <a href="https://www.instagram.com/clsoutlet_sbo/" target="_blank" title="Instagram SBO">📷</a>
+      </div>
+      <div class="unidade-card-body">
+        <div class="info-row">
+          <span class="info-row-icon">🗺️</span>
+          <span>Rua do Café, 415 — Jardim Pérola, Santa Bárbara d'Oeste – SP</span>
+        </div>
+        <div class="info-row">
+          <span class="info-row-icon">📱</span>
+          <span>Instagram: <a href="https://www.instagram.com/clsoutlet_sbo/" target="_blank" style="color:var(--red)">@clsoutlet_sbo</a></span>
+        </div>
+        <div class="horario-box">
+          <h4>⏰ Horário de Funcionamento</h4>
+          <div class="horario-row"><span>Segunda-feira</span><span>09h – 17h</span></div>
+          <div class="horario-row"><span>Terça a Sexta</span><span>09h – 18h</span></div>
+          <div class="horario-row"><span>Sábado</span><span>09h – 14h</span></div>
+          <div class="horario-obs">⚠️ Atenção: os portões fecham 30 minutos antes do encerramento do expediente. Planeje sua visita com antecedência!</div>
+        </div>
+        <a href="https://www.instagram.com/clsoutlet_sbo/" target="_blank" class="unidade-instagram">📸 Seguir no Instagram</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-strip reveal">
+  <h2>Entre no grupo e receba<br><span>as melhores ofertas em primeira mão!</span></h2>
+  <a href="https://chat.whatsapp.com/IJtugbfKVQd3V9pT4wKK30?mode=gi_t" target="_blank" class="btn-white">💬 Entrar no Grupo WhatsApp</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;letter-spacing:3px;color:var(--white)">CLS <span style="color:var(--red)">OUTLET</span></div>
+      <p>A sua loja de outlet completa no interior paulista. Desde 2022 oferecendo os melhores preços em eletrônicos, domésticos, vestuário, informática, som, música e peças automotivas. Duas unidades para melhor atender você.</p>
+      <div class="footer-socials">
+        <a href="https://www.instagram.com/clsoutletararas/" target="_blank" class="social-btn" title="Instagram Araras">📸</a>
+        <a href="https://www.instagram.com/clsoutlet_sbo/" target="_blank" class="social-btn" title="Instagram SBO">📸</a>
+        <a href="https://www.mercadolivre.com.br/pagina/outletcls#client=SEARCH&component_id=header_logo&tracking_id=c5c49c00-d28e-45c1-9f03-062a6e054195" target="_blank" class="social-btn" title="Mercado Livre">🛒</a>
+        <a href="https://www.olx.com.br/perfil/cls-outlet-c4f7f928" target="_blank" class="social-btn" title="OLX">📦</a>
+        <a href="https://chat.whatsapp.com/IJtugbfKVQd3V9pT4wKK30?mode=gi_t" target="_blank" class="social-btn" title="WhatsApp">💬</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="#sobre">Sobre nós</a></li>
+        <li><a href="#categorias">Categorias</a></li>
+        <li><a href="#galeria">Galeria</a></li>
+        <li><a href="#ecommerce">Loja Online</a></li>
+        <li><a href="#unidades">Unidades</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Unidade Araras</h4>
+      <ul>
+        <li><a href="#">Av. Otto Barreto, 1067</a></li>
+        <li><a href="#">Distrito Industrial II</a></li>
+        <li><a href="#">Araras – SP</a></li>
+        <li><a href="https://www.instagram.com/clsoutletararas/" target="_blank">@clsoutletararas</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Unidade Sta. Bárbara</h4>
+      <ul>
+        <li><a href="#">Rua do Café, 415</a></li>
+        <li><a href="#">Jardim Pérola</a></li>
+        <li><a href="#">Santa Bárbara d'Oeste – SP</a></li>
+        <li><a href="https://www.instagram.com/clsoutlet_sbo/" target="_blank">@clsoutlet_sbo</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 <strong>CLS Outlet</strong>. Todos os direitos reservados.</span>
+    <span>Fundada em 2022 — Araras &amp; Santa Bárbara d'Oeste, SP</span>
+  </div>
+</footer>
+
+<!-- WhatsApp Float -->
+<a href="https://chat.whatsapp.com/IJtugbfKVQd3V9pT4wKK30?mode=gi_t" target="_blank" class="wpp-float" title="Fale conosco no WhatsApp">💬</a>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  function closeMenu() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  }
+  window.addEventListener('scroll', () => {
+    if (mobileMenu.classList.contains('open')) closeMenu();
+  });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
